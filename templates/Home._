@@ -1,0 +1,23 @@
+<div class="hero-unit">
+  <h1>Collagen.js</h1>
+  <p><a href="https://github.com/vkareh/collagen" rel="tooltip" data-placement="right" title="The source code for Collagen.js is hosted on GitHub. Click on this link to view the source code.">Collagen.js</a> is a fully-functional framework for building web applications that use <a href="http://nodejs.org" rel="tooltip" title="Node.js is a platform built on Chrome's JavaScript runtime for easily building fast, scalable network applications. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient, perfect for data-intensive real-time applications that run across distributed devices.">node.js</a> on one side, <a href="http://getbootstrap.com" rel="tooltip" data-placement="bottom" title="Sleek, intuitive, and powerful front-end framework for faster and easier web development.">Bootstrap</a> on the other, and <a href="http://backbonejs.org/" rel="tooltip" data-placement="bottom" title="Backbone supplies structure to JavaScript-heavy applications by providing models key-value binding and custom events, collections with a rich API of enumerable functions, views with declarative event handling, and connects it all to your existing application over a RESTful JSON interface.">Backbone</a> in between.</p>
+  <p><a href="https://github.com/vkareh/collagen/archive/master.zip" class="btn btn-primary btn-large">Download Collagen.js</a></p>
+</div>
+
+<div class="row">
+  <div class="span4">
+    <h2>Easy to use</h2>
+    <p>Collagen.js makes it easy to create your web application. It already uses the same components you will need to give you a fully-functional website from where to start</p>
+    <p><a class="btn" href="/about">Get started &raquo;</a></p>
+  </div>
+  <div class="span4">
+    <h2>Flexible</h2>
+    <p>By allowing you to override, extend, and augment any component, Collagen.js gives you virtually unlimited flexibility. No need to feel constrained by your framework.</p>
+    <p><a class="btn" href="/examples">Learn how &raquo;</a></p>
+ </div>
+  <div class="span4">
+    <h2>Modular</h2>
+    <p>JavaScript (and hence Collagen.js) is already modular: node.js modules, jQuery plugins, etc. Why stop there? Collagen.js allows you to use your Backbone components as modules.</p>
+    <p><a class="btn" href="/modules">View modules &raquo;</a></p>
+  </div>
+</div>

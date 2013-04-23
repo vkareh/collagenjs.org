@@ -1,0 +1,227 @@
+<h1>Examples</h1>
+<p class="lead">Collagen.js uses <a href="http://backbonejs.org">Backbone.js</a> as its <a href="http://en.wikipedia.org/wiki/Model-view-controller" rel="tooltip" data-placement="bottom" title="MVC stands for Model, View, Controller. Backbone calls these last ones 'Routers' and they allow client-side interaction with the server">MVC framework</a>, so really your Collagen.js application can be considered a Backbone application, with supercharged server powers.</p>
+<p>To understand how to create a Collagen.js application, we will do it in stages following Backbone's MVC paradigm. You can also read more in-depth information in the <a href="https://github.com/vkareh/collagen/wiki">Collagen.js Wiki</a> and by browsing the <a href="https://github.com/vkareh/collagen" rel="tooltip" title="Collagen.js is released under the MIT license, so go ahead and download the source code and make changes to it.">source code</a></p>
+
+<h3>Models</h3>
+<p class="muted">More about Backbone models: <a href="http://backbonejs.org/#Model" class="muted">http://backbonejs.org/#Model</a></p>
+<p>Models provide a way to represent data on your web application. These are the components that can be synchronized back-and-forth between the client and the server, and as such provide the main end-points for the browser's interaction with the application.</p>
+<p>To start, let's create a basic model and go over it. First, create a file called <em>BlogPost.bones.js</em> inside your <em>app/models</em> directory with the following code.</p>
+
+<small>app/models/<strong>BlogPost.bones.js</strong></small>
+<pre>
+model = models.Model.extend({
+    schema: {
+        type: 'object',
+        properties: {
+            title: {title: 'Title', type: 'string', required: true},
+            body: {title: 'Body', type: 'string', required: true}
+        }
+    }
+});
+</pre>
+<p>The first line <code>model = models.Model.extend({});</code> means that this model is extending Collagen.js's core model. This core model has several features built into it. For example, it defines a synchronization end-point URL (in this case <em>/api/BlogPost</em> that Collagen.js will use to communicate back to the server. It also defines an access control layer and an in-memory non-persistent data store (which you should override for each specific use case).</p>
+<p>The <code>schema</code> property is specific to <a href="https://github.com/garycourt/JSV" rel="tooltip" title="A JavaScript implementation of an extendable, fully compliant JSON Schema validator.">JSV</a> and allows for validation of the different properties of the blog post: Title and Body.</p>
+<p>This model defines a simple blog post (with title and body). However, a blog is not complete without a listing of blog posts. For this, Backbone provides <a href="http://backbonejs.org/#Collection" rel="tooltip" title="Collections are ordered sets of models.">Collections</a>.</p>
+<p>To define the collection, create a file named <em>BlogPost<strong>s</strong>.bones.js</em> (note the <strong>s</strong> at the end) inside your <em>app/models</em> directory with the following code:</p>
+
+<small>app/models/<strong>BlogPost<em>s</em>.bones.js</strong></small>
+<pre>
+model = models.Models.extend({
+    model: models.BlogPost
+});
+</pre>
+<p>That's it for the collection: you just need to declare it and Collagen.js will take care of the rest. It knows how to fetch the list of BlogPost models based on the end-point URL (which is based on the filename).</p>
+<p>Fetching a BlogPosts collection will return all BlogPost models in the data store.</p>
+
+<h3>Views</h3>
+<p class="muted">More about Backbone views: <a href="http://backbonejs.org/#View" class="muted">http://backbonejs.org/#View</a></p>
+<p>Views provide a way to organize your client-side code into logical chunks. They react to client-side events and are typically bound by a model.</p>
+<p>For this example, we will need 3 views: A blog post itself, the blog post creation form, and the list of all blog posts.</p>
+
+<small>app/views/<strong>BlogPostForm.bones.js</strong></small>
+<pre>
+view = views.Collagen.extend({
+    pageTitle: 'Create a new blog post',
+    attach: function() {
+        new BlogPostForm({
+            model: this.model,
+            el: this.$el
+        });
+        return this;
+    }
+});
+
+var BlogPostForm = views.CollagenForm.extend({
+    template: 'BlogPostForm',
+    submit: function(event, data) {
+        this.model.save(data, {
+            success: function(model) {
+                Collagen.message('success', 'Your blog post has been created.');
+            },
+            error: Collagen.error
+        });
+    },
+});
+</pre>
+<p>The first large chunk of code above (<code>view = views.Collagen.extend({})</code>) defines a basic view to be displayed.</p>
+<p>The <code>pageTitle</code> property is used for the web browser's title bar. This can be defined directly as a property of the view, or dynamically from within a function. The <code>attach()</code> function is special in Collagen.js: it gets called after rendering the page and always returns itself (<code>return this;</code>). This allows Collagen.js to force a pure client-side behavior for portions of a view. Inside this function, we are instantiating the actual BlogPostForm view (defined right below it) and passing the current model and HTML element.</p>
+<p>The <code>BlogPostForm</code> view is an extension of the <code>CollagenForm</code> view, which defines methods for form handling in Collagen.js. It tells it that the form template lives in the <em>app/templates/BlogPostForm._</em>, and to display a message once the form is submitted and saved.</p>
+<p>The <em>CollagenForm</em> view automatically parses through the form elements in the supplied template and adds those properties to the specified model. It then triggers "update" and "submit" events when necessary.</p>
+
+<p>The template used in this view is defined below:</p>
+<small>app/templates/<strong>BlogPostForm._</strong></small>
+<pre>
+&lt;form&gt;
+    &lt;fieldset&gt;
+        &lt;legend&gt;Create a new blog post&lt;/legend&gt;
+        &lt;div id="messages"&gt;&lt;/div&gt;
+
+        &lt;label for="title"&gt;Title&lt;/label&gt;
+        &lt;input id="title" type="text" required="required" placeholder="Blog post title" /&gt;
+
+        &lt;label for="body"&gt;Body&lt;/label&gt;
+        &lt;textarea id="body" required="required" rows="4" placeholder="Blog post body..." /&gt;
+
+        &lt;br /&gt;
+        &lt;button type="submit" id="submit" class="btn btn-primary"&gt;Save&lt;/button&gt;
+    &lt;fieldset&gt;
+&lt;/form&gt;
+</pre>
+
+<p>The next view below defines the simple read-only view of the blog post</p>
+<small>app/views/<strong>BlogPostRead.bones.js</strong></small>
+<pre>
+view = views.Collagen.extend({
+    render: function() {
+        var model = this.model;
+        this.pageTitle = model.get('title');
+        $(this.el).empty().append(templates.BlogPost({
+            title: model.get('title'),
+            body: model.get('body')
+        }));
+        return this;
+    }
+});
+</pre>
+<p>This view extends the basic Collagen view to render the blog post. During <code>render()</code>, it defines the <code>pageTitle</code> based on the title of the blog post (<code>model.get('title')</code>) and renders the <em>app/templates/BlogPost._</em> template with the "title" and "body" of the blog post. By convention, the <code>render()</code> function always returns <code>this</code>.</p>
+
+<p>Here's the template used in the read-only blog post view. Note that the <code>title</code> and <code>body</code> properties passed as arguments above get rendered in the template using <a href="http://underscorejs.org" rel="tooltip" title="Underscore.js is a utility-belt library for JavaScript that provides support for the usual functional suspects (each, map, reduce, filter...) without extending any core JavaScript objects.">Underscore.js</a>.</p>
+<small>app/templates/<strong>BlogPost._</strong></small>
+<pre>
+&lt;h1&gt;&lt;%= title %&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;%= body %&gt;&lt;/p&gt;
+</pre>
+
+<p>Now we will define the view for the list of blog posts:</p>
+<small>app/views/<strong>BlogPostList.bones.js</strong></small>
+<pre>
+view = views.Collagen.extend({
+    pageTitle: 'Blog',
+    render: function() {
+        var collection = this.collection;
+        $(this.el).empty().append(templates.BlogPostList({
+            posts: collection.models
+        }));
+        return this;
+    },
+    attach: function() {
+        new BlogMenu({el: $('div#links')}).render();
+        return this;
+    }
+});
+
+var BlogMenu = views.CollagenMenu.extend({
+    menuItems: [{path: '/new/blog', label: 'Add new post', weight: 0}]
+});
+
+views.CollagenNavBar.augment({
+    menuItems: [{path: '/blog', label: 'Blog', weight: 0}]
+});
+</pre>
+<p>The first chunk of code (<code>view = views.Collagen.extend({});</code>) defines the standard view to render a template (<code>BlogPostList._</code>).</p>
+<p>An interesting thing starts to happen in the second chunk of code (<code>BlogMenu</code>). This extends the <em>CollagenMenu</em> view, which generates a renderable navigation menu. This menu is then instantiated in the <code>attach()</code> function above and rendered into <code>$('div#links')</code>.</p>
+<p>The last portion of the code <em>augments</em> the <code>CollagenNavBar</code> view which defines the navigation bar that you see on top in this website. Augmenting allows you to add properties and methods to an existing component (model, view, router, etc.) so that <em>any</em> instance of the augmented component will now have your new definitions <em>as well</em> as the old ones. In this particular case, the navigation bar is defined by Collagen.js, and our application is adding a new element to it (a link to our blog).</p>
+
+<p>The template for the blog list is:</p>
+<pre>
+&lt;h1&gt;Blog&lt;/h1&gt;
+&lt;div id="links"&gt;&lt;/div&gt;
+&lt;ul&gt;
+    &lt;% _.each(posts, function(post) { %&gt;
+        &lt;li&gt;&lt;a href="/blog/&lt;%= post.id %&gt;"&gt;&lt;%= post.get('title') %&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;% }); %&gt;
+&lt;/ul&gt;
+</pre>
+<p>Here you can see Underscore.js in action. In the actual view above, we passed all models in the collection to the template as a <code>posts</code> property. Now in the template we use the <code>_.each()</code> function to iterate through all the posts and display them in an unordered HTML list.</p>
+
+<h3>Routers</h3>
+<p class="muted">More about Backbone routers: <a href="http://backbonejs.org/#Router" class="muted">http://backbonejs.org/#Router</a></p>
+<p>Routers provide a way of registering URL paths in your application and specifying the action to take when navigating to that path.</p>
+<p>Our application now needs a way to serve this to the web browser. Let's create a router that will allow us to register a URL path to the view we just created. Create a file called <em>Blog.bones.js</em> in your <em>app/routers</em> directory with the following code:</p>
+
+<small>app/routers/<strong>Blog.bones.js</strong></small>
+<pre>
+router = routers.Collagen.extend({
+    routes: {
+        'new/blog': 'newBlogPost',
+        'blog': 'blog',
+        'blog/:post': 'blog'
+    },
+    newBlogPost: function() {
+        this.send(views.BlogPostForm, {model: new models.BlogPost()});
+    },
+    blog: function(post) {
+        var self = this;
+        if (post) {
+            var blogPost = new models.BlogPost({id: post});
+            blogPost.fetch({
+                success: function(blogPost) {
+                    self.send(views.BlogPostRead, {model: blogPost});
+                }
+            });
+        } else {
+            var blogPosts = new models.BlogPosts();
+            blogPosts.fetch({
+                success: function(blogPosts) {
+                    self.send(views.BlogPostList, {collection: blogPosts});
+                }
+            });
+        }
+    }
+});
+</pre>
+<p>In this file we extend the default Collagen router (<code>router = routers.Collagen.extend({});</code>) to have the <code>send()</code> function available.</p>
+<p>For the most part, the structure of a router is almost self-explanatory: URL paths are defined in the <code>routes</code> property and mapped to a function that will be executed when the URL is requested.</p>
+<p>In our example, navigating to <a>http://localhost:3000/new/blog</a> will trigger the <code>newBlogPost</code> function, which sends the <code>BlogPostForm</code> view to the client with an empty <code>BlogPost</code> model.</p>
+<p>The <a>blog</a> and <a>blog/:post</a> both point to the same function <code>blog()</code> which has an optional <em>post</em> parameter. This <em>post</em> will eventually be the ID of the blog post. If supplied, the blog post read-only view will be sent to the client (<code>self.send(views.BlogPostRead, {model: blogPost});</code>) after fetching the blog post data (<code>var blogPost = new models.BlogPost({id: post}); blogPost.fetch({});</code>). If no <em>post</em> is supplied, then the BlogPosts <em>collection</em> is called to fetch the entire list of BlogPost models and send them to the <em>BlogPostList</em> view that we defined above.</p>
+
+<h3>Test it out!</h3>
+<p>You have completed this example. If you followed through properly, you will be able to start you application and play with the settings. To start the application, run <code>node index.js</code></p>
+<p>You will quickly notice that you will not be able to create blog posts due to lack of permissions. You now have two options:<ul>
+    <li>start the application in Admin party mode: <code>node index.js --adminParty</code>, or</li>
+    <li>override the access control permissions of the <code>BlogPost</code> model:</li>
+</ul></p>
+
+<small>app/models/<strong>BlogPost.bones.js</strong></small>
+<pre>
+model = models.Model.extend({
+    schema: {
+        type: 'object',
+        properties: {
+            title: {title: 'Title', type: 'string', required: true},
+            body: {title: 'Body', type: 'string', required: true}
+        }
+    }<strong>,
+    permissions: {
+        'read': 'all',
+        'create': 'all',
+        'update': 'owner',
+        'delete': 'owner'
+    }</strong>
+});
+</pre>
+<p>The one thing that changed here was the <code>permissions</code> property. This property is provided by core, but it restricts <em>create</em> privileges to authenticated users. Since this application does not have a login system yet, you can simply override the permissions to allow <em>all</em> users to create BlogPost models. It's a good idea to override this property for any new model type defined.</p>
+<p>Now go ahead and retry creating that blog post. It should give you the proper success message and you should see the item in the list when navigating to the Blog page. The data is not saved anywhere, it just lives in memory for the duration of the application. As soon as you restart Collagen.js, your data will be gone. Collagen.js provides this as a default and expects you to override it with your own persistence data store.</p>
+<p>Congratulations! You have just created your first blog in Collagen.js!</p>
+
+<p class="lead">Perhaps you'd like to extend Collagen.js with modules? Click <a href="/modules">here</a>.</p>

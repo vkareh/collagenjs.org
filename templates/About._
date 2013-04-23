@@ -1,0 +1,12 @@
+<h1>About</h1>
+<p class="lead">Collagen.js is a fully-functional framework for building web applications that use <a href="http://nodejs.org">node.js</a> on the back-end, <a href="http://getbootstrap.com">Twitter Bootstrap</a> on the front-end, and <a href="http://backbonejs.org">Backbone.js</a> in between.</p>
+<p>We use <a href="http://github.com/developmentseed/bones" rel="tooltip" title="Created by Development Seed">Bones</a> to synchronize Backbone components between the client and the server. This way, you have the power of Backbone.js on <em>both</em> sides, you get to use powerful node.js for your data manipulation, and your users can interact with it through a sleek Bootstrap interface.</p>
+
+<h3>Getting started</h3>
+<p class="muted">First off, you need to have node.js installed. Click <a href="http://nodejs.org/download">here</a> to get more information on installing node.js on your system.</p>
+<p>To get started with Collagen.js, <a href="https://github.com/vkareh/collagen/archive/master.zip">download</a> it or <a href="https://github.com/vkareh/collagen">fork</a> it from GitHub. Go into your newly created collagen directory and run the <code>npm install</code> command. This will install all dependencies and create a starting "app" directory where your web application will live.</p>
+<p>Once installed, run the <code>node index.js</code> command to run Collagen.js. You should be able to navigate to <a rel="tooltip" title="...or your configured hostname. You can also change the port number by passing `--port=[number]` as a flag.">http://localhost:3000</a> on your web browser and see the starter Collagen.js application. If everything went well, you should see something similar to the following:</p>
+<p><img src="/assets/collagenjs.org/img/screenshot-1.png" /></p>
+<p>Good job! You now have a running instance of Collagen.js. It's now time to add your own components and modules. You can play around with the settings and files inside the "app" directory.</p>
+
+<p class="lead">Maybe it's time to see some examples? Click <a href="/examples">here</a>.</p>

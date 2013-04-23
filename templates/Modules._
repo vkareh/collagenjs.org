@@ -1,0 +1,62 @@
+<h1>Modules</h1>
+<p class="lead">In Collagen, everything is a module. Including Collagen itself.</p>
+<p>Collagen.js uses the <a href="http://www.nodejs.org/api/modules.html">node.js module API</a> for server-side module loading. This means that it can work as your main application with sub-modules installed underneath, or it can be a module of your application (and still have modules underneath!)</p>
+
+<h3>node.js modules</h3>
+<p>Most modules for node.js can be found over at <a href="https://npmjs.org" rel="tooltip" title="npm is the package manager for the Node JavaScript platform. It puts modules in place so that node can find them, and manages dependency conflicts intelligently.">npm</a>. Installing them is as easy as running <code>npm install &lt;module name&gt;</code> from the command line and adding <code>require('module name');</code> in the correct location in your application code. This is a good place to start: <a href="https://npmjs.org/doc/npm.html">npm man page</a>.</p>
+<p>Since Collagen.js is a node.js module itself, you can run <code>npm install collagen</code> from within your application to make it Collagen-ready. However, Collagen.js is designed to be an overarching framework and the preferred method is to first install Collagen.js, then build your application inside it.</p>
+<p>By default, you should only <code>require()</code> modules on server-only components (i.e. those named <em>*.server.bones.js</em>, in addition to the <em>commands</em> and <em>servers</em> directories). If you still want to use a module on the client side, you can drop a copy of the compiled JavaScript module file into your <em>/app/assets/js</em> directory and Collagen will make sure that it gets sent to the web browser.</p>
+
+<h3>Collagen.js and Bones plugins</h3>
+<p class="muted">More about Bones plugin architecture in the <a href="https://github.com/developmentseed/bones/wiki/Plugin-Architecture" class="muted">Bones Wiki</a></p>
+<p>Since Collagen.js and Bones are very much interrelated, both types of modules share the same structure. The main difference lies in the fact that Collagen.js is an implementation and extension of the Bones framework. As such, any module designed for Bones will work in Collagen.js. However, not all Collagen.js modules will work on Bones. The reason for this is that Collagen.js has implementations of <a rel="tooltip" data-placement="bottom" title="Models, Views, Routers, Servers, etc...">Bones components</a> that are not directly available in Bones.</p>
+<p>The structure for a Collagen.js module is exactly the same as what's on your <em>app/</em> directory:</p>
+<pre>
+my-module/
+|-- commands/
+|   |-- mycommand.bones.js
+|
+|-- models/
+|   |-- MyModel.bones.js
+|   |-- MyModel.server.bones.js
+|
+|-- routers/
+|   |-- MyRouter.bones.js
+|   |-- MyRouter.server.bones.js
+|
+|-- servers/
+|   |-- MyServer.bones.js
+|
+|-- templates/
+|   |-- MyTemplate._
+|
+|-- views/
+|   |-- MyView.bones.js
+|
+|-- index.js
+|-- package.json
+</pre>
+<p>So your Collagen.js module really is a combination of components (and supporting code) that give your Collagen.js application some specific functionality.</p>
+<p>The <code>index.js</code> file, at its very minimum, will load the current module components with the following code:</p>
+<pre>
+var bones = require('bones');
+bones.load(__dirname);
+</pre>
+<p>And the <code>package.json</code> describes the module to npm so that things like module name and dependencies can be taken into account. <a href="https://www.nodejitsu.com" rel="tooltip" title="Nodejitsu is a Platform as a Service for Node.js applications.">Nodejitsu</a> has a great interactive guide for package.json files <a href="http://package.json.nodejitsu.com">here</a>.</p>
+<p>Once your module is ready, you can add <code>require('my-module');</code> to the index.js file in your Collagen.js app directory.</p>
+<h5>A note on publishing modules</h5>
+<p>When publishing modules that work with Collagen.js, you should strive to follow some naming conventions:
+    <ul>
+        <li>If your module uses the Collagen.js API or extends any component included in Collagen.js, prefix the module name with <code>collagen-</code> (e.g. <code>collagen-awesome-module</code>).</li>
+        <li>If your module does <em>not</em> use the Collagen.js API, but it's still composed of the standard <a rel="tooltip" title="Models, Views, Routers, etc...">components</a> <em>without extending any of the ones included by default in Collagen.js</em>, then it should be considered a Bones plugin and you should use the <code>bones-</code> prefix (e.g. <code>bones-awesome-module</code>).</li>
+        <li>If your module does <em>not</em> use the standard directory tree structure outlined above, but still uses Backbone components, or if your module provides a certain functionality that is compatible with Backbone, then use the <code>backbone-</code> prefix (e.g. <code>backbone-awesome-module</code>).</li>
+        <li>If your module is so generic that it can be used outside of the realm of any of this, then you should either have no prefix at all or use the <code>node-</code> prefix to specify that it's specific to the node.js platform.</li>
+    </ul>
+This will allow you to play nicely with other platforms and give developers a better chance of finding your module.</p>
+
+<h3>jQuery and other web plugins</h3>
+<p class="muted">Collagen.js already includes <a class="muted" href="http://jquery.com" rel="tooltip" title="jQuery is a fast, small, and feature-rich JavaScript library. It makes things like HTML document traversal and manipulation, event handling, animation, and Ajax much simpler with an easy-to-use API that works across a multitude of browsers.">jQuery</a> as part of its bundle. These instructions are for additional plugins to enhance jQuery's functionality and other web-based JavaScript plugins.</p>
+<p>Since jQuery plugins are mostly designed to be used on the client, you only need to drop the file into your <em>app/assets/js</em> directory and Collagen.js will take care of the rest.</p>
+<p>For example, if you want to install the <a href="http://jqueryui.com" rel="tooltip" title="jQuery UI is a curated set of user interface interactions, effects, widgets, and themes built on top of the jQuery JavaScript Library.">jQuery UI</a> plugin, head over to the <a href="http://jqueryui.com/download/">download page</a>, download the zip file and open it. Once inside it, browse to the <em>js</em> directory and copy the jquery-ui.js file into your <em>app/assets/js</em> directory. Next time Collagen.js starts your file will have been included within your template and you will be ready to start using it in your code.</p>
+
+<p class="lead">Are you ready to try Collagen.js? <a href="https://github.com/vkareh/collagen/archive/master.zip">Download</a> now or head over to the <a href="https://github.com/vkareh/collagen">source code</a>.</p>
