@@ -7,7 +7,7 @@
 <div class="row">
   <div class="span4">
     <h2>Easy to use</h2>
-    <p>Collagen.js makes it easy to create your web application. It already uses the same components you will need to give you a fully-functional website from where to start</p>
+    <p>Collagen.js makes it easy to create your web application. It gives you a fully-functional website plus all the components you need to give your web application a running start.</p>
     <p><a class="btn" href="/about">Get started &raquo;</a></p>
   </div>
   <div class="span4">
@@ -17,7 +17,7 @@
  </div>
   <div class="span4">
     <h2>Modular</h2>
-    <p>JavaScript (and hence Collagen.js) is already modular: node.js modules, jQuery plugins, etc. Why stop there? Collagen.js allows you to use your Backbone components as modules.</p>
+    <p>JavaScript is already modular: node.js modules, jQuery plugins, etc. Why stop there? Collagen.js allows you to use your Backbone components as modules.</p>
     <p><a class="btn" href="/modules">View modules &raquo;</a></p>
   </div>
 </div>
