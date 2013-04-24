@@ -2,7 +2,7 @@
     "name": "collagenjs.org",
     "dependencies": {
         "collagen": "git://github.com/vkareh/collagen.git",
-        "collagen-contact": "git://github.com/vkareh/collagen-contact.git"
+        "collagen-contact": "*"
     },
     "subdomain": "collagenjs",
     "domains": [
@@ -11,7 +11,7 @@
     "scripts": {
         "start": "index.js"
     },
-    "version": "0.0.1",
+    "version": "0.0.2",
     "engines": {
         "node": "0.8.x"
     }
