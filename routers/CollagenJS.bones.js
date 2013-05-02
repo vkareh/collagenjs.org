@@ -2,7 +2,8 @@ router = routers.Collagen.extend({
     routes: {
         'about': 'about',
         'examples': 'examples',
-        'modules': 'modules'
+        'modules': 'modules',
+        'download': 'download'
     }
 });
 
