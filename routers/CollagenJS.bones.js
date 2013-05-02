@@ -11,7 +11,7 @@ router.prototype.about = function() {
 }
 
 router.prototype.examples = function() {
-    this.send(views.Page, {template: 'Examples'});
+    this.send(views.Examples, {template: 'Examples'});
 }
 
 router.prototype.modules = function() {
