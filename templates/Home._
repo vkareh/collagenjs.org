@@ -1,7 +1,7 @@
 <div class="hero-unit">
   <h1>Collagen.js</h1>
   <p><a href="https://github.com/vkareh/collagen" rel="tooltip" data-placement="right" title="The source code for Collagen.js is hosted on GitHub. Click on this link to view the source code.">Collagen.js</a> is a fully-functional framework for building web applications that use <a href="http://nodejs.org" rel="tooltip" title="Node.js is a platform built on Chrome's JavaScript runtime for easily building fast, scalable network applications. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient, perfect for data-intensive real-time applications that run across distributed devices.">node.js</a> on one side, <a href="http://getbootstrap.com" rel="tooltip" data-placement="bottom" title="Sleek, intuitive, and powerful front-end framework for faster and easier web development.">Bootstrap</a> on the other, and <a href="http://backbonejs.org/" rel="tooltip" data-placement="bottom" title="Backbone supplies structure to JavaScript-heavy applications by providing models key-value binding and custom events, collections with a rich API of enumerable functions, views with declarative event handling, and connects it all to your existing application over a RESTful JSON interface.">Backbone</a> in between.</p>
-  <p><a href="https://github.com/vkareh/collagen/archive/master.zip" class="btn btn-primary btn-large">Download Collagen.js</a></p>
+  <p><a href="/download" class="btn btn-primary btn-large">Download Collagen.js</a></p>
 </div>
 
 <div class="row">
